@@ -9,7 +9,7 @@ int main()
     int deviceCount = 0;
     int mpCount = 0;
     int smCount = 0;
-    int64_t fp32Perf = 0;
+    double fp32Perf = 0;
     int fp16mult = 0;
 
     cout << "yaTest/cuDnn" << endl <<  endl;
@@ -60,7 +60,7 @@ int main()
                     break;
             }
 
-            fp32Perf = smCount*props.clockRate*2/1000/1000;
+            fp32Perf = smCount*props.clockRate*2.f/1000/1000;
             cout << " Perf FP32, GFLOPS:       " << fp32Perf  << endl;
             cout << " Perf FP16, GFLOPS:       " << fp32Perf*fp16mult  << endl;
             cout << " Perf FP64, GFLOPS:       " << fp32Perf/props.singleToDoublePrecisionPerfRatio  << endl;
