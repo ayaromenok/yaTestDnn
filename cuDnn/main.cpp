@@ -9,7 +9,7 @@ int main()
     int deviceCount = 0;
     int mpCount = 0;
     int smCount = 0;
-    int fp32Perf = 0;
+    int64_t fp32Perf = 0;
     int fp16mult = 0;
 
     cout << "yaTest/cuDnn" << endl <<  endl;
