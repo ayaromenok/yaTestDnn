@@ -4,16 +4,14 @@
 
 using namespace std;
 
-int main()
-{
+int checkCudaStatus(){
     int deviceCount = 0;
     int mpCount = 0;
     int smCount = 0;
     double fp32Perf = 0;
     int fp16mult = 0;
 
-    cout << "yaTest/cuDnn" << endl <<  endl;
-    cudaGetDeviceCount(&deviceCount);
+        cudaGetDeviceCount(&deviceCount);
 
     if (deviceCount > 0) {
         for (int i = 0; i < deviceCount; ++i) {
@@ -32,32 +30,33 @@ int main()
 
             mpCount = props.multiProcessorCount;
             switch(props.major){
-                case 6: //Pascal
-                    if(props.minor > 0)
-                        smCount = mpCount*128;
-                    else
-                        smCount = mpCount*64;
-                    fp16mult = 1;
-                    break;
-                case 7: //Volta/Turing
-                        smCount = mpCount*64;
-                    fp16mult = 2;
-                    break;
-                case 8: //Ampere
-                    if(props.minor > 0)
-                        smCount = mpCount*128;
-                    else
-                        smCount = mpCount*64;
-                    fp16mult = 1;
-                    break;
-                case 9: //Hooper
-                    if(props.minor == 0)
-                        smCount = mpCount*64;
-                    fp16mult = 1;
-                    break;
-                default:
-                    cout << "No idea ;)" << std::endl;
-                    break;
+            case 6: //Pascal
+                if(props.minor > 0)
+                    smCount = mpCount*128;
+                else
+                    smCount = mpCount*64;
+                fp16mult = 1;
+                break;
+            case 7: //Volta/Turing
+                smCount = mpCount*64;
+                std::cout << "smCount:" <<  smCount << endl;
+                fp16mult = 2;
+                break;
+            case 8: //Ampere
+                if(props.minor > 0)
+                    smCount = mpCount*128;
+                else
+                    smCount = mpCount*64;
+                fp16mult = 1;
+                break;
+            case 9: //Hooper
+                if(props.minor == 0)
+                    smCount = mpCount*64;
+                fp16mult = 1;
+                break;
+            default:
+                cout << "No idea ;)" << std::endl;
+                break;
             }
 
             fp32Perf = smCount*props.clockRate*2.f/1000/1000;
@@ -67,7 +66,14 @@ int main()
         }
     } else {
         cout << "No CUDA device found" << endl;
+        return 0;
     }
 
-    return 0;
+   return 1;
+
+}
+
+int main() {
+   cout << "yaTest/cuDnn" << endl <<  endl;
+   checkCudaStatus();
 }
